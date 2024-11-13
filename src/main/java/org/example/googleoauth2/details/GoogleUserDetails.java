@@ -9,6 +9,7 @@ public class GoogleUserDetails implements OAuth2UserInfo {
     private Map<String, Object> attributes;
 
     public GoogleUserDetails(Map<String, Object> attributes) {
+        this.attributes = attributes;
     }
 
     @Override
