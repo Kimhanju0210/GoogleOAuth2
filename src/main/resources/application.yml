@@ -22,3 +22,6 @@ spring:
       hibernate:
         ddl-auto: create
       show-sql: true
+
+lient-id: ${GOOGLE_CLIENT_ID}
+client-secret: ${GOOGLE_CLIENT_SECRET}

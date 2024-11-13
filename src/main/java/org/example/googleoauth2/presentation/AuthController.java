@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/oauth-login")
+@RequestMapping("/oauth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -97,13 +97,8 @@ public class AuthController {
         String pageName = "관리자 페이지";
         Member member = (Member) session.getAttribute("member");
 
-        if (member == null || !member.getRole().equals("ADMIN")) {
-            return "redirect:/oauth";
-        }
+        return "redirect:/oauth";
 
-        model.addAttribute("loginType", loginType);
-        model.addAttribute("pageName", pageName);
-        return "admin";  // admin.html
     }
 
     @GetMapping("/logout")
