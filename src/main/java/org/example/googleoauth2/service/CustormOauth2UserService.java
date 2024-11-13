@@ -1,6 +1,7 @@
 package org.example.googleoauth2.service;
 
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.example.googleoauth2.details.CustomOauth2UserDetails;
@@ -14,6 +15,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @Slf4j
@@ -27,11 +30,10 @@ public class CustormOauth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest);
         log.info("getAttributes : {}",oAuth2User.getAttributes());
 
+        OAuth2UserInfo oAuth2UserInfo = new GoogleUserDetails(oAuth2User.getAttributes());
+
         String provider = userRequest.getClientRegistration().getRegistrationId();
 
-        OAuth2UserInfo oAuth2UserInfo = null;
-
-        // 뒤에 진행할 다른 소셜 서비스 로그인을 위해 구분 => 구글
         if(provider.equals("google")){
             log.info("구글 로그인");
             oAuth2UserInfo = new GoogleUserDetails(oAuth2User.getAttributes());
@@ -57,6 +59,12 @@ public class CustormOauth2UserService extends DefaultOAuth2UserService {
             memberRepository.save(member);
         } else{
             member = findMember;
+        }
+
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (attributes != null) {
+            HttpSession session = attributes.getRequest().getSession();
+            session.setAttribute("member", member);
         }
 
         return new CustomOauth2UserDetails(member, oAuth2User.getAttributes());
