@@ -5,22 +5,20 @@ spring:
       client:
         registration:
           google:
-            client-id: []
-            client-secret: []
+            client-id:
+            client-secret:
             scope:
               - email
               - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/google"
 
-  spring:
-    # DB ?? ?? ?? => localhost:3306
-    datasource:
-      url: jdbc:mysql://localhost:3306/Google_DB?serverTimezone=Asia/Seoul
-      username: root
-      password: KimHanJu080210@
-      driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    url: jdbc:mysql://localhost:3306/Google_DB?serverTimezone=Asia/Seoul
+    username: root
+    password: KimHanJu080210@
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
-    # JPA ??
     jpa:
       hibernate:
-        ddl-auto: create # application ? ?? ??? create, ???? none ?? ????
+        ddl-auto: create
       show-sql: true
